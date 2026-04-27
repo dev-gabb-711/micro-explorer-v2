@@ -1,0 +1,13 @@
+# Go binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.pdf
+
+# GoLand specific files
+.idea/
+
+# OS specific files
+.DS_Store
