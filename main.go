@@ -1,30 +1,21 @@
 package main
 
 import (
-	"log"
-
+	"Game1/scenes" // Ensure your go.mod matches this path
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"log"
 )
 
-type Game struct{}
-
-func (g *Game) Update() error {
-	return nil
-}
-
-func (g *Game) Draw(screen *ebiten.Image) {
-	ebitenutil.DebugPrint(screen, "Hello, World!")
-}
-
-func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return 320, 240
-}
-
 func main() {
-	ebiten.SetWindowSize(640, 480)
-	ebiten.SetWindowTitle("Hello, World!")
-	if err := ebiten.RunGame(&Game{}); err != nil {
+	game := &Game{
+		state:        NewGlobalState(),
+		currentScene: &scenes.MainMenuScene{},
+	}
+
+	ebiten.SetWindowSize(1280, 960)
+	ebiten.SetWindowTitle("Micro Explorer: The War of the Small World")
+
+	if err := ebiten.RunGame(game); err != nil {
 		log.Fatal(err)
 	}
 }
