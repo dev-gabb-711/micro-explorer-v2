@@ -1,15 +1,15 @@
 package main
 
 import (
-	"Game1/scenes" // Ensure your go.mod matches this path
-	"github.com/hajimehoshi/ebiten/v2"
 	"log"
+
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 func main() {
 	game := &Game{
 		state:        NewGlobalState(),
-		currentScene: &scenes.MainMenuScene{},
+		currentScene: &MainMenuScene{},
 	}
 
 	ebiten.SetWindowSize(1280, 960)
