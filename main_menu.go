@@ -1,15 +1,16 @@
 package main
 
 import (
-	"fmt"
-	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
-	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"image/color"
 	"os"
+
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/text"
 )
 
 type MainMenuScene struct {
-	selectedOption int
+	selectedOption int // 0: Play, 1: How to Play, 2: Exit
 }
 
 func (s *MainMenuScene) Update(state *GlobalState) Scene {
@@ -21,10 +22,12 @@ func (s *MainMenuScene) Update(state *GlobalState) Scene {
 	}
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-		if s.selectedOption == 0 {
-			fmt.Println("Starting Game...")
-			// Placeholder scene for how to play
-		} else if s.selectedOption == 2 {
+		switch s.selectedOption {
+		case 0: // Play
+			return NewMapScene()
+		case 1: // How to Play
+			return nil
+		case 2: // Exit
 			os.Exit(0)
 		}
 	}
@@ -32,14 +35,37 @@ func (s *MainMenuScene) Update(state *GlobalState) Scene {
 }
 
 func (s *MainMenuScene) Draw(screen *ebiten.Image) {
-	opts := []string{"Play", "How to Play", "Exit"}
-	msg := "Micro Explorer: The War of the Small World\n\n"
-	for i, opt := range opts {
-		cursor := "  "
+	screenWidth := screen.Bounds().Dx()
+	screenHeight := screen.Bounds().Dy()
+
+	// 1. Draw Title
+	title := "MICRO EXPLORER"
+	subtitle := "The War of the Small World"
+
+	titleBounds := text.BoundString(TitleFont, title)
+	titleX := (screenWidth - titleBounds.Dx()) / 2
+	text.Draw(screen, title, TitleFont, titleX, screenHeight/3, color.White)
+
+	subBounds := text.BoundString(MenuFont, subtitle)
+	subX := (screenWidth - subBounds.Dx()) / 2
+	text.Draw(screen, subtitle, MenuFont, subX, (screenHeight/3)+40, color.RGBA{147, 250, 165, 1}) // Light blue
+
+	// 2. Draw Options
+	options := []string{"Play", "How to Play", "Exit"}
+	startY := (screenHeight / 2) + 80
+	rowSpacing := 60
+
+	for i, opt := range options {
+		c := color.RGBA{150, 150, 150, 255} // Unselected color
+
+		bounds := text.BoundString(MenuFont, opt)
+		x := (screenWidth - bounds.Dx()) / 2
+		y := startY + (i * rowSpacing)
+
 		if i == s.selectedOption {
-			cursor = "> "
+			c = color.RGBA{255, 255, 255, 255}
+			text.Draw(screen, ">", MenuFont, x-24, y, c)
 		}
-		msg += cursor + opt + "\n"
+		text.Draw(screen, opt, MenuFont, x, y, c)
 	}
-	ebitenutil.DebugPrint(screen, msg)
 }
