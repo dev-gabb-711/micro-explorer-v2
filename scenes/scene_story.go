@@ -1,10 +1,13 @@
-package main
+package scenes
 
 import (
+	"Game1/assets"
+	"Game1/core"
+	"image/color"
+
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/text"
-	"image/color"
 )
 
 type StoryScene struct {
@@ -64,7 +67,7 @@ func NewStoryScene(level int) *StoryScene {
 	}
 }
 
-func (s *StoryScene) Update(state *GlobalState) Scene {
+func (s *StoryScene) Update(state *core.GlobalState) core.Scene {
 	s.ticks++
 
 	switch s.state {
@@ -112,12 +115,12 @@ func (s *StoryScene) Draw(screen *ebiten.Image) {
 
 	// Draw UI Box Header
 	header := "--- INCOMING TRANSMISSION ---"
-	hBounds := text.BoundString(MenuFont, header)
-	text.Draw(screen, header, MenuFont, (screenWidth-hBounds.Dx())/2, 100, color.RGBA{0, 255, 0, 255})
+	hBounds := text.BoundString(assets.MenuFont, header)
+	text.Draw(screen, header, assets.MenuFont, (screenWidth-hBounds.Dx())/2, 100, color.RGBA{0, 255, 0, 255})
 
 	// Draw Title
-	tBounds := text.BoundString(MenuFont, s.title)
-	text.Draw(screen, s.title, MenuFont, (screenWidth-tBounds.Dx())/2, 160, color.RGBA{255, 200, 50, 255})
+	tBounds := text.BoundString(assets.MenuFont, s.title)
+	text.Draw(screen, s.title, assets.MenuFont, (screenWidth-tBounds.Dx())/2, 160, color.RGBA{255, 200, 50, 255})
 
 	// Draw Briefing Lines
 	startY := 220
@@ -128,25 +131,25 @@ func (s *StoryScene) Draw(screen *ebiten.Image) {
 		for i := 0; i < s.currentLine; i++ {
 			// Draw all PREVIOUS, fully completed lines
 			y := startY + (i * lineSpacing)
-			text.Draw(screen, s.lines[i], MenuFont, 100, y, color.White)
+			text.Draw(screen, s.lines[i], assets.MenuFont, 100, y, color.White)
 		}
 
 		// Draw the CURRENT line being typed
 		if s.currentLine < len(s.lines) {
 			y := startY + (s.currentLine * lineSpacing)
 			displayText := s.lines[s.currentLine][:s.visibleChars]
-			text.Draw(screen, displayText, MenuFont, 100, y, color.White)
+			text.Draw(screen, displayText, assets.MenuFont, 100, y, color.White)
 		}
 	}
 
 	if s.state == 2 {
 		prompt := "[ PRESS ENTER ]"
-		pBounds := text.BoundString(GridFont, prompt)
+		pBounds := text.BoundString(assets.GridFont, prompt)
 
 		alpha := uint8(200)
 		if (s.ticks/30)%2 == 0 {
 			alpha = 50
 		}
-		text.Draw(screen, prompt, GridFont, (screenWidth-pBounds.Dx())/2, 500, color.RGBA{255, 255, 255, alpha})
+		text.Draw(screen, prompt, assets.GridFont, (screenWidth-pBounds.Dx())/2, 500, color.RGBA{255, 255, 255, alpha})
 	}
 }

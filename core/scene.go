@@ -1,6 +1,8 @@
-package main
+package core
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 // Scene defines what a game state needs to do
 type Scene interface {

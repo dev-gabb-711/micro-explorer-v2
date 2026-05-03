@@ -1,4 +1,4 @@
-package main
+package core
 
 // GlobalState tracks data that survives scene transitions
 type GlobalState struct {

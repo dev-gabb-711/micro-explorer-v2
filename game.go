@@ -1,10 +1,14 @@
 package main
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	"Game1/core"
+
+	"github.com/hajimehoshi/ebiten/v2"
+)
 
 type Game struct {
-	state        *GlobalState
-	currentScene Scene
+	state        *core.GlobalState
+	currentScene core.Scene
 }
 
 func (g *Game) Update() error {

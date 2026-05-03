@@ -1,6 +1,8 @@
 package main
 
 import (
+	"Game1/core"
+	"Game1/scenes"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -8,8 +10,8 @@ import (
 
 func main() {
 	game := &Game{
-		state:        NewGlobalState(),
-		currentScene: &MainMenuScene{},
+		state:        core.NewGlobalState(),
+		currentScene: &scenes.MainMenuScene{},
 	}
 
 	ebiten.SetWindowSize(1280, 960)

@@ -1,6 +1,8 @@
-package main
+package scenes
 
 import (
+	"Game1/assets"
+	"Game1/core"
 	"fmt"
 	"image/color"
 
@@ -27,7 +29,7 @@ func NewMapScene() *MapScene {
 	}
 }
 
-func (s *MapScene) Update(state *GlobalState) Scene {
+func (s *MapScene) Update(state *core.GlobalState) core.Scene {
 	if inpututil.IsKeyJustPressed(ebiten.KeyDown) && s.selectedLevel < 5 {
 		s.selectedLevel += 5
 	}
@@ -59,20 +61,20 @@ func (s *MapScene) Draw(screen *ebiten.Image) {
 	screenHeight := screen.Bounds().Dy()
 
 	titleStr := "SELECT MISSION"
-	titleBounds := text.BoundString(TitleFont, titleStr)
+	titleBounds := text.BoundString(assets.TitleFont, titleStr)
 	titleX := (screenWidth - titleBounds.Dx()) / 2
-	text.Draw(screen, titleStr, TitleFont, titleX, 100, color.White)
+	text.Draw(screen, titleStr, assets.TitleFont, titleX, 100, color.White)
 
 	subStr := "Arrows to Navigate, ESC to go back, ENTER to Select"
-	subBounds := text.BoundString(MenuFont, subStr)
+	subBounds := text.BoundString(assets.MenuFont, subStr)
 	subX := (screenWidth - subBounds.Dx()) / 2
 	headerBottomY := 160
-	text.Draw(screen, subStr, MenuFont, subX, headerBottomY, color.RGBA{150, 150, 150, 255}) // Gray subtitle
+	text.Draw(screen, subStr, assets.MenuFont, subX, headerBottomY, color.RGBA{150, 150, 150, 255}) // Gray subtitle
 
 	columnSpacing := 205
 	rowSpacing := 150
 
-	longestBounds := text.BoundString(GridFont, "[10] The Source")
+	longestBounds := text.BoundString(assets.GridFont, "[10] The Source")
 	gridTotalWidth := (columnSpacing * 4) + longestBounds.Dx()
 	startX := (screenWidth - gridTotalWidth) / 2
 	availableHeight := screenHeight - headerBottomY
@@ -89,9 +91,9 @@ func (s *MapScene) Draw(screen *ebiten.Image) {
 
 		if i == s.selectedLevel {
 			c = color.RGBA{255, 255, 255, 255} // Highlight selected text in bright white
-			text.Draw(screen, ">", GridFont, x-20, y, c)
+			text.Draw(screen, ">", assets.GridFont, x-20, y, c)
 		}
 
-		text.Draw(screen, name, GridFont, x, y, c)
+		text.Draw(screen, name, assets.GridFont, x, y, c)
 	}
 }
